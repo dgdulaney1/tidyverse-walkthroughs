@@ -1,0 +1,90 @@
+---
+title: "_if, _at, _all versions of summarise(), rename(), and mutate()"
+output: github_document
+editor_options: 
+  chunk_output_type: console
+---
+
+**Background:** Summarise(), rename(), and mutate() are core tidyverse functions that allow us to calculate aggregate values, rename functions, and create new columns.     
+
+They also have alternate versions with the suffixes _if, _at, and _all that allow you to use these functions on several variables at a time.     
+
+```{r setup, include = FALSE}
+
+library(tidyverse)
+
+```
+
+  
+```{r create_df}
+
+df <- data.frame("col1" = runif(100),
+                 "col2" = runif(100),
+                 "col3" = runif(100),
+                 "col4" = sample(letters, 100, replace = TRUE))
+
+head(df)
+
+```
+  
+The _if versions of these functions allow you to work with columns that meet a specific condition, e.g. only those that are numeric.
+  
+```{r summarise_if_example}
+
+df %>% 
+  summarise_if(is.numeric, mean) %>% 
+  head()
+
+```
+  
+```{r rename_if_example}
+
+df %>% 
+  rename_if(is.numeric, function(x) paste0("new_", x)) %>% 
+  head()
+
+```
+
+```{r mutate_if_example}
+
+times_100 <- function(x) x * 100
+
+df %>% 
+  mutate_if(is.numeric, list(times_100 = times_100)) %>% 
+  head()
+
+```
+
+----------  
+  
+The _at versions of these functions allow you to 
+
+
+
+
+  
+The _all versions of these functions allow you to
+  
+```{r summarise_all example}
+
+df %>% 
+  select(col1:col3) %>% # selecting numeric columns only
+  gather(col, val, col1:col3) %>% # reshaping data from wide to long
+  group_by(col) %>% 
+  summarise_all(list(min = min, mean = mean, max = max, sd = sd)) %>% 
+  head()
+
+times_100 <- function(x) x * 100
+
+df %>% 
+  select(col1:col3) %>% # selecting numeric columns only
+  mutate_all(funs(times_100 = times_100)) %>% 
+  head()
+
+```
+
+
+
+
+
+
