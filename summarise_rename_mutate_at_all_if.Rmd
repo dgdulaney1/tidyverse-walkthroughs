@@ -5,7 +5,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-**Background:** Summarise(), rename(), and mutate() are core tidyverse functions that allow us to calculate aggregate values, rename functions, and create new columns.     
+Summarise(), rename(), and mutate() are core tidyverse functions that allow you to calculate aggregate values, rename functions, and create new columns.     
 
 They also have alternate versions with the suffixes _if, _at, and _all that allow you to use these functions on several variables at a time.     
 
@@ -15,7 +15,6 @@ library(tidyverse)
 
 ```
 
-  
 ```{r create_df}
 
 df <- data.frame("col1" = runif(100),
@@ -87,7 +86,7 @@ df %>%
   
 ----------  
   
-The _all versions of these functions allow you to
+The _all versions of these functions allow you to work with all columns at once.
   
 ```{r summarise_all example}
 
@@ -95,17 +94,28 @@ df %>%
   select(col1:col3) %>% # selecting numeric columns only
   gather(col, val, col1:col3) %>% # reshaping data from wide to long
   group_by(col) %>% 
-  summarise_all(list(min = min, mean = mean, max = max, sd = sd)) %>% 
-  head()
-
-times_100 <- function(x) x * 100
-
-df %>% 
-  select(col1:col3) %>% # selecting numeric columns only
-  mutate_all(funs(times_100 = times_100)) %>% 
+  summarise_all(list(min = min, mean = mean, max = max, std_dev = sd)) %>% 
   head()
 
 ```
+  
+```{r rename_all_example}
+
+df %>% 
+  rename_all(function(x) paste0("new_", x)) %>% 
+  head()
+
+```
+  
+```{r mutate_all_example}
+
+df %>% 
+  select(col1:col3) %>% # selecting numeric columns only
+  mutate_all(list(times_100 = times_100, mean = mean)) %>% 
+  head()
+
+```
+
 
 
 
