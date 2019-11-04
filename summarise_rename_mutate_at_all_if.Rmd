@@ -27,6 +27,8 @@ head(df)
 
 ```
   
+----------    
+  
 The _if versions of these functions allow you to work with columns that meet a specific condition, e.g. only those that are numeric.
   
 ```{r summarise_if_example}
@@ -57,11 +59,33 @@ df %>%
 
 ----------  
   
-The _at versions of these functions allow you to 
+The _at versions of these functions allow you to manually specify which columns to work with.
+  
+```{r summarise_at_example}
 
+df %>% 
+  summarise_at(vars(col1, col2), mean) %>% 
+  head()
 
+```
+  
+```{r rename_at_example}
 
+df %>% 
+  rename_at(vars(col1, col3), function(x) paste0("new_", x)) %>% 
+  head()
 
+```
+
+```{r mutate_at_example}
+
+df %>% 
+  mutate_at(vars(col2, col3), list(times_100 = times_100)) %>% 
+  head()
+
+```
+  
+----------  
   
 The _all versions of these functions allow you to
   
